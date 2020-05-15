@@ -5,9 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="static/css/contact.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <title>Contact a Volunteer | Covid-19 Volunteering</title>
 </head>
 <body>
-    
+    <h2 class="heading">Contact A Volunteer!</h2>
+    <div class="list">
+        <table>
+            <thead>
+                <tr class="v-row" id="head-row">
+                    <td>Name</td>
+                    <td>Age</td>
+                    <td>State</td>
+                    <td>Medical Student</td>
+                    <td>How they can help</td>
+                    <td><i class="fa fa-phone"></i></td>
+                    <td><i class="fa fa-envelope"></i></td>
+                </tr>
+            </thead>
+            <tbody>
+        <% volunteers.forEach(function(volunteer){ %>
+            <tr class="v-row">
+                <td><%- volunteer.name %></td>
+                <td><%- volunteer.age %></td>
+                <td><%- volunteer.state %></td>
+                <td class="v-medic"><% if(volunteer.medical) { %><i class="fa fa-check-circle" style="color: green;"></i><% } else { %><i class="fa fa-times-circle" style="color: red;"></i><% } %></td>
+                <td><%- volunteer.skills %></td>
+                <td><%- volunteer.phone %></td>
+                <td><%- volunteer.email %></td>
+            </tr>
+        <% }); %>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

@@ -41,34 +41,46 @@ app.get('/volunteer', function (req, res) {
 });
 
 app.get('/contact', function (req, res) {
-    res.render('contact');
+    Volunteer.find({}).sort({ date: -1 }).exec(function (err, volunteers) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('contact', {
+                volunteers: volunteers
+            });
+        }
+    });
 });
 
 app.post('/volunteer', function (req, res) {
     let name = req.body.name;
-    let age = Number(req.body.age);
+    let age = req.body.age;
     let state = req.body.state;
     let skills = req.body.skills;
     let email = req.body.email;
-    let phone = Number(req.body.phone);
+    let phone = req.body.phone;
     let medical = (req.body.medical) ? true : false;
-    if (name == "" || age == "" || state == "" || skills == "" || email == "" || phone == "" || age<10 || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) || !(/^\d{10}$/.test(phone))) {
+    if (name == "" || age == "" || state == "" || skills == "" || email == "" || phone == ""  || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
         res.send("Your form did not validate, please fill it properly!");
+    } else if(Number.isInteger(age) || Number(age)<10) {
+        res.send("Your form did not validate, please fill it properly! Remember, you have to be above 10 years old to volunteer.");
+    } else if(Number.isInteger(phone) || !(/^\d{10}$/.test(phone))) {
+        res.send("Your form did not validate, please fill it properly! Remember, for the phone number, make sure to remove +91 or extra zeros, only the ten digits are needed.");
     } else {
         let newVolunteer = new Volunteer();
         newVolunteer.name = name;
-        newVolunteer.age = age;
+        newVolunteer.age = Number(age);
         newVolunteer.state = state;
         newVolunteer.skills = skills;
         newVolunteer.email = email;
-        newVolunteer.phone = phone;
+        newVolunteer.phone = Number(phone);
         newVolunteer.medical = medical;
-        newVolunteer.save(function(err, t) {
+        newVolunteer.save(function(err, volunteer) {
             if (err) {
                 console.log(err);
                 res.send('There was a problem while submitting your form, please try again later! Sorry for the inconvenience.'); 
             } else {
-                res.send('Posted');   
+                res.send('Your entry was added! Thank you for volunteering!');
             }
         });
     }

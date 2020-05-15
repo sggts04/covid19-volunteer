@@ -1,0 +1,84 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', Verdana, sans-serif;
+    flex-direction: column;
+    background-color: #222831;
+    color: #ececec;
+}
+
+h2 {
+    font-size: 2.5em;
+    font-weight: 300;
+}
+
+a {
+    text-decoration: none;
+}
+
+.v-row:nth-child(odd){background-color: #2a3949;}
+
+#head-row {
+    background-color: #434e81;
+    border-radius: 3%;
+}
+
+.v-row {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+td {
+    padding: 0.7em;
+    border-radius: 3%;
+}
+
+.v-medic {
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    td {
+        padding: 0.4em;
+    }
+}
+
+@media (max-width: 800px) {
+    table, thead, tbody, th, td, tr { 
+		display: block; 
+    }
+    thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+    }
+
+    tr { border: 1px solid #ccc; }
+
+    td { 
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	td:before { 
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+    }
+    
+    td:nth-of-type(1):before { content: "Name: "; }
+	td:nth-of-type(2):before { content: "Age: "; }
+	td:nth-of-type(3):before { content: "State: "; }
+	td:nth-of-type(4):before { content: "Medical Student: "; }
+	td:nth-of-type(5):before { content: "How they can help: "; }
+	td:nth-of-type(6):before { content: "Phone: "; }
+	td:nth-of-type(7):before { content: "Email: "; }
+}
