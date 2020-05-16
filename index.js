@@ -41,7 +41,10 @@ app.get('/volunteer', function (req, res) {
 });
 
 app.get('/contact', function (req, res) {
-    Volunteer.find({}).sort({ date: -1 }).exec(function (err, volunteers) {
+    let query = {};
+    if(req.query.state) query.state = req.query.state;
+    if(req.query.medical) query.medical = (req.query.medical=='yes')? true : false;
+    Volunteer.find(query).sort({ date: -1 }).exec(function (err, volunteers) {
         if (err) {
             console.log(err);
         } else {
