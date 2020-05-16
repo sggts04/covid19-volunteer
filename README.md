@@ -52,28 +52,45 @@ Once data is recieved, there is a server side validation of the data, if any pro
 ### Volunteer Search Route GET `/contact` or `/contact?state=x&medical=y`:
 Using the parameters of the GET request, `state`(which state) and `medical`(if volunteer should be medical student), the `Volunteer` collection is queried and data is returned and rendered in a table in `contact.html`. The html page also has a form to query the data again based on state and medical knowledge, and the form on submission again sends a GET request to `/contact`
 
+### Static Files Route GET `/static`:
+This route serves the static files inside the static folder using the same file structure inside it. So images are at `/static/img/...` and css files are at `/static/css/...`
+
 ## Volunteer Collection Model
 
-### name
+### `name`
 String: Volunteer's name.
 
-### age
-Number: Volunteer's age. Should be greater than 10 be eligible. Validated both client side and server side.
+### `age`
+Number: Volunteer's age. Should be greater than 10 to be eligible. Validated both client side and server side.
 
-###	state
+###	`state`
 String: Volunteer's state. Selected through a drop down.
 
-### skills
-String: Description of how volunteer can help.
+### `skills`
+String: Description of how the volunteer can help.
 
-### medical
-Boolean: Whether volunteer is a medical student or graduate.
+### `medical`
+Boolean: Whether the volunteer is a medical student or graduate.
 
-### email
+### `email`
 String: Volunteer's email. Validated both client side and server side.
 
-### phone
+### `phone`
 Number: Volunteer's mobile number. Validated both client side and server side.
 
-### date
+### `date`
 Date Object: Date of volunteer's registration. Set automatically on insertion of new volunteer.
+
+## HTML Templates (Views)
+
+### `index.html`
+The main homepage, has buttons to go to volunteer register form or search volunteer page.
+
+### `volunteer.html`
+The volunteer register form, also does client-side validation of the form before submission. Submits the form to POST `/volunteer`
+
+### `contact.html`
+The volunteer search page, displays all the registered volunteers, also has a form which can be used to query the volunteers based on state or medical knowledge. The form is submitted to GET `/contact`.
+
+### `confirm.html`
+The success/error page which dynamically displays an error or a success message as data is supplied from the backend while rendering.

@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const port =  process.env.PORT || 3000  // for hosting on heroku
 
 // Setting up the expres app
-app.use('/static', express.static(path.join(__dirname, 'static')));
+app.use('/static', express.static(path.join(__dirname, 'static'))); // Static files (like css, images) are served through /static route
 app.engine('html', require('ejs').renderFile);  // ejs rendering but with .html extension
 app.set('view engine', 'html'); // set our new html view engine
 app.use(bodyParser.json());       // to support JSON-encoded bodies
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 // Setting up MongoDB
-const mongoURL = process.env.MONGODB_URI || "mongodb://localhost/covid"
+const mongoURL = process.env.MONGODB_URI || "mongodb://localhost/covid" // for hosting on heroku
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -32,18 +32,23 @@ db.on('error', function (err) {
 });
 
 //Routes
+// Index GET Route
 app.get('/', function (req, res) {
     res.render('index');
 });
 
+// Volunteer Register Form GET Route
 app.get('/volunteer', function (req, res) {
     res.render('volunteer');
 });
 
+// Search Volunteer GET Route
 app.get('/contact', function (req, res) {
+    // Build query object using the GET parameters
     let query = {};
     if(req.query.state) query.state = req.query.state;
     if(req.query.medical) query.medical = (req.query.medical=='yes')? true : false;
+    // Find the query results and sort in reverse order of date registered.
     Volunteer.find(query).sort({ date: -1 }).exec(function (err, volunteers) {
         if (err) {
             console.log(err);
@@ -56,7 +61,9 @@ app.get('/contact', function (req, res) {
     });
 });
 
+// Volunteer Form Submission POST route
 app.post('/volunteer', function (req, res) {
+    // Get details from POST request parameters.
     let name = req.body.name;
     let age = req.body.age;
     let state = req.body.state;
@@ -64,13 +71,13 @@ app.post('/volunteer', function (req, res) {
     let email = req.body.email;
     let phone = req.body.phone;
     let medical = (req.body.medical) ? true : false;
-    if (name == "" || age == "" || state == "" || skills == "" || email == "" || phone == "") {
+    if (name == "" || age == "" || state == "" || skills == "" || email == "" || phone == "") {     // All fields are required
         res.render('confirm', {error: true, confirmation: "Your form did not validate, please fill it properly! Remember, all fields are required!"});
-    } else if(Number.isInteger(age) || Number(age)<10) {
+    } else if(Number.isInteger(age) || Number(age)<10) {     // Number should be valid and atleast 10
         res.render('confirm', {error: true, confirmation: "Your form did not validate, please fill it properly! Remember, you have to be above 10 years old to volunteer."});
-    } else if(Number.isInteger(phone) || !(/^\d{10}$/.test(phone))) {
+    } else if(Number.isInteger(phone) || !(/^\d{10}$/.test(phone))) {     // Phone number should be exactly 10 digits
         res.render('confirm', {error: true, confirmation: "Your form did not validate, please fill it properly! Remember, for the phone number, make sure to remove +91 or extra zeros, only the ten digits are needed."});
-    } else if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+    } else if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {     // Email should be valid
         res.render('confirm', {error: true, confirmation: "Your form did not validate, please fill it properly! Remember, fill a valid email address so you can be contacted."});
     } else {
         let newVolunteer = new Volunteer();
@@ -81,6 +88,7 @@ app.post('/volunteer', function (req, res) {
         newVolunteer.email = email;
         newVolunteer.phone = Number(phone);
         newVolunteer.medical = medical;
+        // Save this new volunteer, now that its validated.
         newVolunteer.save(function(err, volunteer) {
             if (err) {
                 console.log(err);
