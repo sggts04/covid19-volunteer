@@ -47,6 +47,7 @@ app.get('/contact', function (req, res) {
     Volunteer.find(query).sort({ date: -1 }).exec(function (err, volunteers) {
         if (err) {
             console.log(err);
+            res.render('confirm', {error: true, confirmation: "Sorry we couldn't fetch the results, please try again later! Sorry for the inconvenience."});
         } else {
             res.render('contact', {
                 volunteers: volunteers
@@ -63,12 +64,14 @@ app.post('/volunteer', function (req, res) {
     let email = req.body.email;
     let phone = req.body.phone;
     let medical = (req.body.medical) ? true : false;
-    if (name == "" || age == "" || state == "" || skills == "" || email == "" || phone == ""  || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-        res.send("Your form did not validate, please fill it properly!");
+    if (name == "" || age == "" || state == "" || skills == "" || email == "" || phone == "") {
+        res.render('confirm', {error: true, confirmation: "Your form did not validate, please fill it properly! Remember, all fields are required!"});
     } else if(Number.isInteger(age) || Number(age)<10) {
-        res.send("Your form did not validate, please fill it properly! Remember, you have to be above 10 years old to volunteer.");
+        res.render('confirm', {error: true, confirmation: "Your form did not validate, please fill it properly! Remember, you have to be above 10 years old to volunteer."});
     } else if(Number.isInteger(phone) || !(/^\d{10}$/.test(phone))) {
-        res.send("Your form did not validate, please fill it properly! Remember, for the phone number, make sure to remove +91 or extra zeros, only the ten digits are needed.");
+        res.render('confirm', {error: true, confirmation: "Your form did not validate, please fill it properly! Remember, for the phone number, make sure to remove +91 or extra zeros, only the ten digits are needed."});
+    } else if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+        res.render('confirm', {error: true, confirmation: "Your form did not validate, please fill it properly! Remember, fill a valid email address so you can be contacted."});
     } else {
         let newVolunteer = new Volunteer();
         newVolunteer.name = name;
@@ -81,9 +84,9 @@ app.post('/volunteer', function (req, res) {
         newVolunteer.save(function(err, volunteer) {
             if (err) {
                 console.log(err);
-                res.send('There was a problem while submitting your form, please try again later! Sorry for the inconvenience.'); 
+                res.render('confirm', {error: true, confirmation: 'There was a problem while submitting your form, please try again later! Sorry for the inconvenience.'}); 
             } else {
-                res.send('Your entry was added! Thank you for volunteering!');
+                res.render('confirm', {error: false, confirmation: 'Your entry was added! Thank you for volunteering!'});
             }
         });
     }
