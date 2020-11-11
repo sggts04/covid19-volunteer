@@ -1,4 +1,4 @@
-# Covid-19 Volunteering Portal by Shreyas Gupta
+# Covid-19 Volunteering Portal
 
 Covid-19 Volunteering Portal is a portal which lets you list yourself as a volunteer to help out people or organisations during these unfortunate times, and lets organisations or people in need get in touch with people who are willing to volunteer.
 
@@ -28,8 +28,8 @@ Confirmation Page for Error/Success:
 ## Local Setup Tutorial
 
 ```bash
-$ git clone https://github.com/sggts04/sggts04-SGR-2
-$ cd sggts04-SGR-2
+$ git clone https://github.com/sggts04/covid19-volunteer
+$ cd covid19-volunteer
 $ npm install
 $ cp db.example.js db.js
 ```
