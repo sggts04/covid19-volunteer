@@ -31,9 +31,9 @@ Confirmation Page for Error/Success:
 $ git clone https://github.com/sggts04/sggts04-SGR-2
 $ cd sggts04-SGR-2
 $ npm install
+$ cp db.example.js db.js
 ```
-Make sure to install MongoDB from [the official source](https://www.mongodb.com/download-center/community?tck=docs_server).
-
+Then edit `db.js` and add your own mongodb URL, I am using MongoDB Atlas for my development/deployment.
 Then run `npm run dev` which uses `nodemon` to run the server, which basically restarts the server whenever the source code is changed.
 
 Lastly, navigate to `localhost:3000` to get to the homepage.

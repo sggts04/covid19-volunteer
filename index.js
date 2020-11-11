@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const Volunteer = require('./models/Volunteer');
+const URL = require('./db.js');
 const bodyParser = require('body-parser');
 const port =  process.env.PORT || 3000  // for hosting on heroku
 
@@ -16,7 +17,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 // Setting up MongoDB
-const mongoURL = process.env.MONGODB_URI || "mongodb://localhost/covid" // for hosting on heroku
+const mongoURL = URL.url // for hosting on heroku
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
