@@ -2,8 +2,6 @@
 
 Covid-19 Volunteering Portal is a portal which lets you list yourself as a volunteer to help out people or organisations during these unfortunate times, and lets organisations or people in need get in touch with people who are willing to volunteer.
 
-**It is live at: [covid19-volunteer.herokuapp.com](https://covid19-volunteer.herokuapp.com/)**
-
 ## Tech Stack
 
 * HTML/CSS/JS
